@@ -1,5 +1,5 @@
 import haxe.Json;
-import sys.io.File;
+import funkin.FunkinAssets;
 import funkin.utils.CameraUtil;
 import flixel.text.FlxText;
 import flixel.addons.text.FlxTypeText;
@@ -15,12 +15,15 @@ import funkin.utils.CoolUtil;
 import funkin.scripting.PluginsManager;
 import flixel.addons.transition.FlxTransitionableState;
 
+import mobile.controls.MobileDPadMode;
+import mobile.controls.MobileActionMode;
+
 var controls = PlayerSettings.player1.controls;
 
 var allowControls = false;
 var curSelected = 0;
 var buttons:FlxTypedGroup;
-var options = ['resume', 'restart', 'botplay', 'practice', 'options', 'exit'];
+var options = ['resume', 'restart', 'practice', 'options', 'exit'];
 
 function onCreate() {
 	var json = PluginsManager.callPluginFunc('Utils', 'loadJson', ['metadata', PlayState.SONG.song.toLowerCase()]);
@@ -75,17 +78,8 @@ function onCreate() {
 
 		var sprite = new FlxSprite();
 		sprite.frames = Paths.getSparrowAtlas('menus/pause/pause buttons');
-		
-		// Handle botplay button which may not exist in sprite sheet yet
-		if (option == 'botplay') {
-			// Create a placeholder using text or reuse practice button visuals
-			sprite.animation.addByPrefix('idle', 'botplay idle', 24, true);
-			sprite.animation.addByPrefix('selected', 'botplay selected', 12, true);
-		} else {
-			sprite.animation.addByPrefix('idle', option + ' idle', 24, true);
-			sprite.animation.addByPrefix('selected', option + ' selected', 12, true);
-		}
-		
+		sprite.animation.addByPrefix('idle', option + ' idle', 24, true);
+		sprite.animation.addByPrefix('selected', option + ' selected', 12, true);
 		sprite.animation.play('idle');
 		sprite.setPosition(20, 350);
 		sprite.screenCenter(FlxAxes.X);
@@ -165,6 +159,16 @@ function onCreate() {
 	port.setPosition(FlxG.width, 325);
 	add(port);
 	FlxTween.tween(port, {x: (FlxG.width - port.width)}, 0.5, {ease: FlxEase.quintOut});
+	
+	addVirtualPad(MobileDPadMode.UP_DOWN, MobileActionMode.A_B);
+	virtualPad.buttonUp.x = virtualPad.buttonDown.x -= 200;
+	virtualPad.buttonUp.y = virtualPad.buttonDown.y -= 350;
+	virtualPad.buttonA.x = virtualPad.buttonB.x += FlxG.width;
+	//virtualPad.buttonA.y = virtualPad.buttonB.y += 325;
+	FlxTween.tween(virtualPad.buttonUp, {alpha: 0.5, x: 0, y: FlxG.height - 255}, 0.3, {ease: FlxEase.quintOut, startDelay: (0.05 * 1)});
+	FlxTween.tween(virtualPad.buttonDown, {alpha: 0.5, x: 0, y: FlxG.height - 135}, 0.3, {ease: FlxEase.quintOut, startDelay: (0.05 * 2)});
+	FlxTween.tween(virtualPad.buttonA, {x: FlxG.width - 132}, 0.5, {ease: FlxEase.quintOut, startDelay: (0.05 * 1)});
+	FlxTween.tween(virtualPad.buttonB, {x: FlxG.width - 258}, 0.5, {ease: FlxEase.quintOut, startDelay: (0.05 * 2)});
 
 	FlxTimer.wait(0.5, () -> {
 		changeSelection(0);
@@ -179,6 +183,7 @@ function onCreate() {
 
 	songtxt = PluginsManager.callPluginFunc('Utils', 'menuIntroCard', ["Breakfast", 'selora789', [32, 0]]);
 	add(songtxt);
+	addVirtualPadCamera();
 }
 
 function onUpdate(elapsed) {
@@ -192,14 +197,14 @@ function onUpdate(elapsed) {
 	}
 
 	if (allowControls) {
-		if (FlxG.keys.justPressed.ESCAPE)
+		if (FlxG.keys.justPressed.ESCAPE || virtualPad.buttonB.justPressed)
 			close();
 
-		if (controls.UI_DOWN_P)
+		if (controls.UI_DOWN_P || virtualPad.buttonDown.justPressed)
 			changeSelection(1);
-		if (controls.UI_UP_P)
+		if (controls.UI_UP_P || virtualPad.buttonUp.justPressed)
 			changeSelection(-1);
-		if (controls.ACCEPT)
+		if (controls.ACCEPT || virtualPad.buttonA.justPressed)
 			choose();
 	}
 }
@@ -222,7 +227,7 @@ function changeSelection(change) {
 }
 
 function choose() {
-	if (options[curSelected] != 'practice' && options[curSelected] != 'botplay') {
+	if (options[curSelected] != 'practice') {
 		allowControls = false;
 		pauseMusic.pause();
 	}
@@ -246,11 +251,6 @@ function choose() {
 
 			visualDeath();
 			FlxTimer.wait(0.8, FlxG.resetState);
-		case 'botplay':
-			PlayState.instance.cpuControlled = !PlayState.instance.cpuControlled;
-			PlayState.changedDifficulty = true;
-			PlayState.instance.botplayTxt.visible = PlayState.instance.cpuControlled;
-			PlayState.instance.botplayTxt.alpha = 1;
 		case 'practice':
 			PlayState.instance.practiceMode = !PlayState.instance.practiceMode;
 			PlayState.changedDifficulty = true;
@@ -286,7 +286,11 @@ function visualDeath() {
 	FlxTween.tween(bBox, {x: -bBox.width}, 0.5, {ease: FlxEase.quintIn});
 	FlxTween.tween(tBox, {x: 1280}, 0.5, {ease: FlxEase.quintIn});
 	for (i in buttons.members)
-		FlxTween.tween(i, {x: i.x - i.width * 4}, 0.3, {ease: FlxEase.quintIn, startDelay: 0.05 * i.ID});
+		FlxTween.tween(i, {x: i.x - i.width * 4}, 0.3, {ease: FlxEase.quintIn, startDelay: 0.05 * i.ID});	
+	FlxTween.tween(virtualPad.buttonUp, {x: virtualPad.buttonUp.x - virtualPad.buttonUp.width * 4}, 0.3, {ease: FlxEase.quintIn, startDelay: 0.05 * 1});
+	FlxTween.tween(virtualPad.buttonDown, {x: virtualPad.buttonDown.x - virtualPad.buttonDown.width * 4}, 0.3, {ease: FlxEase.quintIn, startDelay: 0.05 * 2});
+	FlxTween.tween(virtualPad.buttonA, {x: (FlxG.width)}, 0.5, {ease: FlxEase.quintIn});
+	FlxTween.tween(virtualPad.buttonB, {x: (FlxG.width)}, 0.5, {ease: FlxEase.quintIn});
 	FlxTween.tween(p, {y: -p.height}, 0.5, {ease: FlxEase.quartIn});
 	bTxt.resetText('');
 	FlxTween.tween(tTxt, {x: tBox.width}, 0.5, {ease: FlxEase.quintIn});
@@ -306,7 +310,7 @@ function end() {
 }
 
 function loadJson() {
-	var rawJson = File.getContent(Paths.modFolders(StringTools.replace('songs/' + PlayState.SONG.song.toLowerCase() + '/metadata.json', ' ', '-')));
+	var rawJson = FunkinAssets.getContent(Paths.modFolders(StringTools.replace('songs/' + PlayState.SONG.song.toLowerCase() + '/metadata.json', ' ', '-')));
 	var data = Json.parse(rawJson);
 	return data;
 }
