@@ -88,7 +88,7 @@ function onCreatePost() {
 	}
 
 	FlxG.mouse.visible = false;
-	for (m in [playHUD.timeTxt, playHUD.scoreTxt]) {
+	for (m in [playHUD.timeTxt, playHUD.scoreTxt, botplayTxt]) {
 		m.setFormat(Paths.font("tomo.otf"), 24, FlxColor.WHITE, FlxTextAlign.CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		m.borderSize = 3;
 	}
