@@ -15,6 +15,7 @@ import funkin.backend.Difficulty;
 import funkin.backend.MusicBeatState;
 import funkin.states.PlayState;
 import funkin.states.MainMenuState;
+import funkin.states.substates.GameplayChangersSubstate;
 import funkin.states.editors.ChartEditorState;
 import funkin.states.transitions.ScriptedTransition;
 import funkin.scripting.ScriptedSubstate;
@@ -906,7 +907,10 @@ function onUpdate(elapsed) {
 				changeDiff(1);
 
 			if (FlxG.keys.justPressed.CONTROL)
-				changeSection(true);
+			{
+				persistentUpdate = false;
+				openSubState(new GameplayChangersSubstate());
+			}
 			if (controls.ACCEPT)
 				loadSong();
 			if (FlxG.keys.justPressed.TAB){
