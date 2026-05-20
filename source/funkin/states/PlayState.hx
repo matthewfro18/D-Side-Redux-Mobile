@@ -629,9 +629,9 @@ class PlayState extends MusicBeatState
 		gfGroup.x = GF_X;
 		gfGroup.y = GF_Y;
 		
-		boyfriendGroup.zIndex = file.bfZIndex ?? 0;
-		dadGroup.zIndex = file.dadZIndex ?? 0;
-		gfGroup.zIndex = file.gfZIndex ?? 0;
+		extensions.flixel.ZIndex.set(boyfriendGroup, file.bfZIndex ?? 0);
+		extensions.flixel.ZIndex.set(dadGroup, file.dadZIndex ?? 0);
+		extensions.flixel.ZIndex.set(gfGroup, file.gfZIndex ?? 0);
 	}
 	
 	// null checking

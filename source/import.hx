@@ -40,5 +40,8 @@ import funkin.backend.MusicBeatState;
 
 using flixel.util.FlxArrayUtil;
 
+using extensions.flixel.FlxCameraTools;
+using extensions.flixel.FlxSpriteTools;
+
 using StringTools;
 #end

@@ -1,6 +1,7 @@
 package funkin.utils;
 
 import flixel.util.FlxSort;
+import extensions.flixel.ZIndex;
 
 /**
 	Utility class for sorting methods
@@ -53,6 +54,6 @@ class SortUtil
 	{
 		if (a == null || b == null) return 0;
 		
-		return FlxSort.byValues(order, a.zIndex, b.zIndex);
+		return FlxSort.byValues(order, ZIndex.get(a), ZIndex.get(b));
 	}
 }

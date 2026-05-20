@@ -1401,7 +1401,7 @@ class CharacterEditorState extends UIState // MUST EXTEND UI STATE needed for ac
 	{
 		if (characterGhost != null)
 		{
-			characterGhost.zIndex = uiElements.toolBar.ghostInFront.value ? 10 : -1;
+			extensions.flixel.ZIndex.set(characterGhost, uiElements.toolBar.ghostInFront.value ? 10 : -1);
 		}
 		
 		charLayer.sort(SortUtil.sortByZ, flixel.util.FlxSort.ASCENDING);

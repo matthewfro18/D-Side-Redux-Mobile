@@ -14,4 +14,6 @@ import funkin.backend.Logger;
 import funkin.utils.*;
 
 using haxe.io.Path;
+using extensions.flixel.FlxCameraTools;
+using extensions.flixel.FlxSpriteTools;
 #end

@@ -219,7 +219,7 @@ class WIPNoteSkinEditor extends UIState
 		}
 		
 		uiElements.toolBar.ghostInFront.onChange = (ui) -> {
-			ghostfields.zIndex = ui.value.toBool() ? 999 : -1;
+			extensions.flixel.ZIndex.set(ghostfields, ui.value.toBool() ? 999 : -1);
 			fieldLayering.sort(SortUtil.sortByZ, flixel.util.FlxSort.ASCENDING);
 		}
 		

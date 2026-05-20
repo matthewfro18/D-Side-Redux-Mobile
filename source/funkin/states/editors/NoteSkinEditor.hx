@@ -187,15 +187,15 @@ class NoteSkinEditor extends MusicBeatState
 		super.create();
 		
 		ghostFields = new FlxTypedGroup<PlayField>();
-		ghostFields.zIndex = 0;
+		extensions.flixel.ZIndex.set(ghostFields, 0);
 		add(ghostFields);
 		
 		playFields = new FlxTypedGroup<PlayField>();
-		playFields.zIndex = 1;
+		extensions.flixel.ZIndex.set(playFields, 1);
 		add(playFields);
 		
 		noteSplashes = new FlxTypedGroup<NoteSplash>();
-		noteSplashes.zIndex = 2;
+		extensions.flixel.ZIndex.set(noteSplashes, 2);
 		add(noteSplashes);
 		
 		notes = [];
