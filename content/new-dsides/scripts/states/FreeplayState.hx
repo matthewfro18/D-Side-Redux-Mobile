@@ -965,7 +965,10 @@ function onUpdate(elapsed) {
 				if (FlxG.mouse.overlaps(rightArrow))
 					changeDiff(1);
 				if (FlxG.mouse.overlaps(ctrl))
-					changeSection(true);
+				{
+					persistentUpdate = false;
+					openSubState(new GameplayChangersSubstate());
+				}
 
 				if (FlxG.mouse.overlaps(getCurrentSongBox()))
 					loadSong();
