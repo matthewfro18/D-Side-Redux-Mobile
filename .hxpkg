@@ -15,6 +15,10 @@
                 "version": "2.6.4"
             },
             {
+                "name": "format",
+                "version": "3.8.0"
+            },
+            {
                 "name": "flixel-animate",
                 "link": "https://github.com/MaybeMaru/flixel-animate",
                 "branch": "5decd2e91dfdb62c235aaa344303d9b2d77c83d5"
