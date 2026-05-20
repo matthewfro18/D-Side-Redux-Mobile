@@ -101,8 +101,6 @@
     <haxeflag name="--macro" value="addMetadata('@:build(funkin.backend.macro.FlxMacro.buildFlxCamera())', 'flixel.FlxCamera')" />
 
     <haxeflag name="--macro" value="include('funkin')" />
-    <haxeflag name="--macro" value="include('flixel.addons',true,['flixel.addons.nape.*','flixel.addons.editors.*'])" />
-    <haxeflag name="--macro" value="include('flixel.effects',true)"/>
 
     <haxeflag name="-dce no" />
 

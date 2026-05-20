@@ -40,7 +40,7 @@ jobs:
           haxelib install hxpkg
           haxelib run hxpkg install
       - name: Compile
-        run: haxelib run lime build Project.xml linux -D ${{ inputs.buildFlags }}
+        run: haxelib run lime build Project.xml linux -D ${{ inputs.buildFlags || 'commit' }}
       - name: Publish Artifact
         uses: actions/upload-artifact@main
         with:
@@ -64,7 +64,7 @@ jobs:
           haxelib install hxpkg
           haxelib run hxpkg install
       - name: Compile
-        run: haxelib run lime build windows -D ${{ inputs.buildFlags }}
+        run: haxelib run lime build windows -D ${{ inputs.buildFlags || 'commit' }}
       - name: Publish Artifact
         uses: actions/upload-artifact@main
         with:
@@ -115,7 +115,7 @@ jobs:
           haxelib run hxpkg install
       - name: Compile
         run: |
-          haxelib run lime build mac -arm64 -D ${{ inputs.buildFlags }} -D HXCPP_ARM64
+          haxelib run lime build mac -arm64 -D ${{ inputs.buildFlags || 'commit' }} -D HXCPP_ARM64
       - name: Publish Artifact
         uses: actions/upload-artifact@main
         with:
