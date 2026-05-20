@@ -54,7 +54,7 @@ class FlxMacro
 				kind: FFun(
 					{
 						args: [
-							{name: 'frames', type: (macro :flixel.graphics.frames.FlxAtlasFrames)},
+							{name: 'frames', type: (macro :Dynamic)},
 						],
 						expr: macro
 						{
@@ -78,8 +78,8 @@ class FlxMacro
 							{
 								name: "color",
 								opt: true,
-								type: (macro :flixel.util.FlxColor),
-								value: (macro flixel.util.FlxColor.WHITE)
+								type: (macro :Dynamic),
+								value: (macro 0xFFFFFFFF)
 							}
 						],
 						expr: macro
@@ -123,11 +123,11 @@ class FlxMacro
 				kind: FFun(
 					{
 						args: [
-							{name: 'object', type: (macro :flixel.FlxObject)},
+							{name: 'object', type: (macro :Dynamic)},
 							{
 								name: 'axes',
 								opt: true,
-								type: (macro :flixel.util.FlxAxes),
+								type: (macro :Dynamic),
 								value: (macro cast 0x11)}
 						],
 						expr: macro
@@ -171,12 +171,15 @@ class FlxMacro
 				access: [haxe.macro.Expr.Access.APublic],
 				kind: FFun(
 					{
-						args: [{name: 'shader', type: (macro :flixel.graphics.tile.FlxGraphicsShader)}],
+						args: [{name: 'shader', type: (macro :Dynamic)}],
 						expr: macro
 						{
 							if (shader == null) return;
 							
-							var filter = new openfl.filters.ShaderFilter(shader);
+							var shaderFilterClass = Type.resolveClass("openfl.filters.ShaderFilter");
+							if (shaderFilterClass == null) return;
+							
+							var filter = Type.createInstance(shaderFilterClass, [shader]);
 							filters ??= [];
 							filters.push(filter);
 						}
@@ -190,16 +193,19 @@ class FlxMacro
 				access: [haxe.macro.Expr.Access.APublic],
 				kind: FFun(
 					{
-						args: [{name: 'shader', type: (macro :flixel.graphics.tile.FlxGraphicsShader)}],
+						args: [{name: 'shader', type: (macro :Dynamic)}],
 						expr: macro
 						{
 							if (filters == null) return false;
 							
+							var shaderFilterClass = Type.resolveClass("openfl.filters.ShaderFilter");
+							if (shaderFilterClass == null) return false;
+							
 							for (filter in filters)
 							{
-								if (filter is openfl.filters.ShaderFilter)
+								if (Std.isOfType(filter, shaderFilterClass))
 								{
-									var fl:openfl.filters.ShaderFilter = cast filter;
+									var fl:Dynamic = cast filter;
 									if (fl.shader == shader)
 									{
 										filters.remove(filter);
