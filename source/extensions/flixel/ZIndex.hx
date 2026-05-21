@@ -9,7 +9,8 @@ class ZIndex
 	
 	public static inline function get(object:FlxBasic):Int
 	{
-		return values.exists(object) ? values.get(object) : 0;
+		final value = values.get(object);
+		return value != null ? value : 0;
 	}
 	
 	public static inline function set(object:FlxBasic, value:Int):Int
