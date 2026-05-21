@@ -3,6 +3,8 @@ package funkin.utils;
 #if macro
 import haxe.macro.Expr;
 import haxe.macro.Context;
+import sys.FileSystem;
+import sys.io.File;
 
 using haxe.macro.Tools;
 
@@ -76,12 +78,29 @@ class MacroUtil
 	public static macro function getPrecompliedContent(path:String)
 	{
 		#if !display
-		if (!funkin.FunkinAssets.exists(path))
+		final resolvedPath = if (FileSystem.exists(path))
+		{
+			path;
+		}
+		else
+		{
+			try
+			{
+				Context.resolvePath(path);
+			}
+			catch (e:Dynamic)
+			{
+				null;
+			}
+		}
+		
+		if (resolvedPath == null || !FileSystem.exists(resolvedPath))
 		{
 			Context.fatalError('could not find content at $path', Context.currentPos());
 		}
 		
-		final ret = funkin.FunkinAssets.getContent(path);
+		Context.registerModuleDependency(Context.getLocalModule(), resolvedPath);
+		final ret = File.getContent(resolvedPath);
 		
 		return macro $v{ret};
 		#end
