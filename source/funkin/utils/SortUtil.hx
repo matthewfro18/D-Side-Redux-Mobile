@@ -54,6 +54,11 @@ class SortUtil
 	{
 		if (a == null || b == null) return 0;
 		
-		return FlxSort.byValues(order, ZIndex.get(a), ZIndex.get(b));
+		final aZ:Int = ZIndex.get(a);
+		final bZ:Int = ZIndex.get(b);
+		
+		if (aZ < bZ) return order;
+		if (aZ > bZ) return -order;
+		return 0;
 	}
 }

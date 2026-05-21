@@ -39,7 +39,8 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: install libvlc
         run: |
-            sudo apt-get install vlc libvlc-dev libvlccore-dev vlc-bin
+            sudo apt-get update
+            sudo apt-get install -y vlc libvlc-dev libvlccore-dev vlc-bin libasound2-dev
       - name: Install libraries
         run: |
           haxelib setup ~/haxelib
