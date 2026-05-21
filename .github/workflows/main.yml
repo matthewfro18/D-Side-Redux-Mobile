@@ -98,6 +98,7 @@ jobs:
           haxelib install hxpkg
           haxelib run hxpkg install
           git -C .haxelib/lime/git submodule update --init --recursive
+          find .haxelib/lime/git -path '*/lib/png/pngpriv.h' -exec perl -0pi -e 's/#\s*include <fp\.h>/# include <math.h>/g' {} \;
       - name: Compile
         run: |
           haxelib run lime build mac -64 -D ${{ inputs.buildFlags || 'commit' }} -D HXCPP_M64
@@ -125,6 +126,7 @@ jobs:
           haxelib install hxpkg
           haxelib run hxpkg install
           git -C .haxelib/lime/git submodule update --init --recursive
+          find .haxelib/lime/git -path '*/lib/png/pngpriv.h' -exec perl -0pi -e 's/#\s*include <fp\.h>/# include <math.h>/g' {} \;
       - name: Compile
         run: |
           haxelib run lime build mac -arm64 -D ${{ inputs.buildFlags || 'commit' }} -D HXCPP_ARM64
