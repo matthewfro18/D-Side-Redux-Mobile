@@ -305,7 +305,7 @@ class NoteOffsetState extends MusicBeatState
 				}
 			}
 			
-			if (controls.RESET || virtualPad.buttonC.justPressed)
+			if (controls.RESET #if mobile || virtualPad.buttonC.justPressed #end)
 			{
 				for (i in 0...ClientPrefs.comboOffset.length)
 				{
@@ -316,25 +316,25 @@ class NoteOffsetState extends MusicBeatState
 		}
 		else
 		{
-			if (controls.UI_LEFT_P || virtualPad.buttonLeft.justPressed)
+			if (controls.UI_LEFT_P #if mobile || virtualPad.buttonLeft.justPressed #end)
 			{
 				barPercent = Math.max(delayMin, Math.min(ClientPrefs.noteOffset - 1, delayMax));
 				updateNoteDelay();
 			}
-			else if (controls.UI_RIGHT_P || virtualPad.buttonRight.justPressed)
+			else if (controls.UI_RIGHT_P #if mobile || virtualPad.buttonRight.justPressed #end)
 			{
 				barPercent = Math.max(delayMin, Math.min(ClientPrefs.noteOffset + 1, delayMax));
 				updateNoteDelay();
 			}
 			
 			var mult:Int = 1;
-			if ((controls.UI_LEFT || virtualPad.buttonLeft.pressed) || (controls.UI_RIGHT || virtualPad.buttonRight.pressed))
+			if ((controls.UI_LEFT #if mobile || virtualPad.buttonLeft.pressed #end) || (controls.UI_RIGHT #if mobile || virtualPad.buttonRight.pressed #end))
 			{
 				holdTime += elapsed;
 				if (controls.UI_LEFT) mult = -1;
 			}
 			
-			if ((controls.UI_LEFT_R || virtualPad.buttonLeft.justReleased) || (controls.UI_RIGHT_R || virtualPad.buttonRight.justReleased)) holdTime = 0;
+			if ((controls.UI_LEFT_R #if mobile || virtualPad.buttonLeft.justReleased #end) || (controls.UI_RIGHT_R #if mobile || virtualPad.buttonRight.justReleased #end)) holdTime = 0;
 			
 			if (holdTime > 0.5)
 			{
@@ -343,7 +343,7 @@ class NoteOffsetState extends MusicBeatState
 				updateNoteDelay();
 			}
 			
-			if (controls.RESET || virtualPad.buttonC.justPressed)
+			if (controls.RESET #if mobile || virtualPad.buttonC.justPressed #end)
 			{
 				holdTime = 0;
 				barPercent = 0;
@@ -351,13 +351,13 @@ class NoteOffsetState extends MusicBeatState
 			}
 		}
 		
-		if (controls.ACCEPT || virtualPad.buttonA.justPressed)
+		if (controls.ACCEPT #if mobile || virtualPad.buttonA.justPressed #end)
 		{
 			onComboMenu = !onComboMenu;
 			updateMode();
 		}
 		
-		if (controls.BACK || virtualPad.buttonB.justPressed)
+		if (controls.BACK #if mobile || virtualPad.buttonB.justPressed #end)
 		{
 			zoomTween?.cancel();
 			beatTween?.cancel();

@@ -112,8 +112,10 @@ class BaseOptionsMenu extends MusicBeatSubstate
 			updateTextFrom(optionsArray[i]);
 		}
 		
+		#if mobile
 		addVirtualPad(LEFT_FULL, A_B_C);
-    	addVirtualPadCamera();
+		addVirtualPadCamera();
+		#end
 		
 		changeSelection();
 		reloadCheckboxes();
@@ -140,16 +142,16 @@ class BaseOptionsMenu extends MusicBeatSubstate
 	
 	override function update(elapsed:Float)
 	{
-		if (controls.UI_UP_P || virtualPad.buttonUp.justPressed)
+		if (controls.UI_UP_P #if mobile || virtualPad.buttonUp.justPressed #end)
 		{
 			changeSelection(-1);
 		}
-		if (controls.UI_DOWN_P || virtualPad.buttonDown.justPressed)
+		if (controls.UI_DOWN_P #if mobile || virtualPad.buttonDown.justPressed #end)
 		{
 			changeSelection(1);
 		}
 		
-		if (controls.BACK || virtualPad.buttonB.justPressed)
+		if (controls.BACK #if mobile || virtualPad.buttonB.justPressed #end)
 		{
 			close();
 			FlxG.sound.play(Paths.sound('cancelMenu'));
@@ -165,7 +167,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 			
 			if (usesCheckbox)
 			{
-				if (controls.ACCEPT || virtualPad.buttonA.justPressed)
+				if (controls.ACCEPT #if mobile || virtualPad.buttonA.justPressed #end)
 				{
 					FlxG.sound.play(Paths.sound('scrollMenu'));
 					curOption.setValue((curOption.getValue() == true) ? false : true);
@@ -175,13 +177,13 @@ class BaseOptionsMenu extends MusicBeatSubstate
 			}
 			else if (curOption.type == 'button')
 			{
-				if (controls.ACCEPT || virtualPad.buttonA.justPressed) curOption.callback();
+				if (controls.ACCEPT #if mobile || virtualPad.buttonA.justPressed #end) curOption.callback();
 			}
 			else if (curOption.type != 'label')
 			{
-				if ((controls.UI_LEFT || virtualPad.buttonLeft.pressed) || (controls.UI_RIGHT || virtualPad.buttonRight.pressed))
+				if ((controls.UI_LEFT #if mobile || virtualPad.buttonLeft.pressed #end) || (controls.UI_RIGHT #if mobile || virtualPad.buttonRight.pressed #end))
 				{
-					var pressed = ((controls.UI_LEFT_P || virtualPad.buttonLeft.justPressed) || (controls.UI_RIGHT_P || virtualPad.buttonRight.justPressed));
+					var pressed = ((controls.UI_LEFT_P #if mobile || virtualPad.buttonLeft.justPressed #end) || (controls.UI_RIGHT_P #if mobile || virtualPad.buttonRight.justPressed #end));
 					if (holdTime > 0.5 || pressed)
 					{
 						if (pressed)
@@ -189,7 +191,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 							var add:Dynamic = null;
 							if (curOption.type != 'string')
 							{
-								add = (controls.UI_LEFT || virtualPad.buttonLeft.pressed) ? -curOption.changeValue : curOption.changeValue;
+								add = (controls.UI_LEFT #if mobile || virtualPad.buttonLeft.pressed #end) ? -curOption.changeValue : curOption.changeValue;
 							}
 							
 							switch (curOption.type)
@@ -212,7 +214,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 									
 								case 'string':
 									var num:Int = curOption.curOption; // lol
-									if (controls.UI_LEFT_P || virtualPad.buttonLeft.justPressed) --num;
+									if (controls.UI_LEFT_P #if mobile || virtualPad.buttonLeft.justPressed #end) --num;
 									else num++;
 									
 									if (num < 0)
@@ -256,13 +258,13 @@ class BaseOptionsMenu extends MusicBeatSubstate
 						holdTime += elapsed;
 					}
 				}
-				else if ((controls.UI_LEFT_R || virtualPad.buttonLeft.justReleased) || (controls.UI_RIGHT_R || virtualPad.buttonRight.justReleased))
+				else if ((controls.UI_LEFT_R #if mobile || virtualPad.buttonLeft.justReleased #end) || (controls.UI_RIGHT_R #if mobile || virtualPad.buttonRight.justReleased #end))
 				{
 					clearHold();
 				}
 			}
 			
-			if (controls.RESET || virtualPad.buttonC.justPressed)
+			if (controls.RESET #if mobile || virtualPad.buttonC.justPressed #end)
 			{
 				for (i in 0...optionsArray.length)
 				{

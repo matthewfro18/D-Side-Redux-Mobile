@@ -130,27 +130,27 @@ class ControlsSubState extends MusicBeatSubstate
 	{
 		if (!rebindingKey)
 		{
-			if (controls.UI_UP_P || virtualPad.buttonUp.justPressed)
+			if (controls.UI_UP_P #if mobile || virtualPad.buttonUp.justPressed #end)
 			{
 				changeSelection(-1);
 			}
-			if (controls.UI_DOWN_P || virtualPad.buttonDown.justPressed)
+			if (controls.UI_DOWN_P #if mobile || virtualPad.buttonDown.justPressed #end)
 			{
 				changeSelection(1);
 			}
-			if ((controls.UI_LEFT_P || virtualPad.buttonLeft.justPressed) || (controls.UI_RIGHT_P || virtualPad.buttonRight.justPressed))
+			if ((controls.UI_LEFT_P #if mobile || virtualPad.buttonLeft.justPressed #end) || (controls.UI_RIGHT_P #if mobile || virtualPad.buttonRight.justPressed #end))
 			{
 				changeAlt();
 			}
 			
-			if (controls.BACK || virtualPad.buttonB.justPressed)
+			if (controls.BACK #if mobile || virtualPad.buttonB.justPressed #end)
 			{
 				ClientPrefs.reloadControls();
 				close();
 				FlxG.sound.play(Paths.sound('cancelMenu'));
 			}
 			
-			if ((controls.ACCEPT || virtualPad.buttonA.justPressed) && nextAccept <= 0)
+			if ((controls.ACCEPT #if mobile || virtualPad.buttonA.justPressed #end) && nextAccept <= 0)
 			{
 				if (optionShit[curSelected][0] == defaultKey)
 				{
